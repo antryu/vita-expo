@@ -1,9 +1,8 @@
 import { View, Text, ScrollView, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
-import { Colors } from "@/theme/colors";
+import { type ThemeColors } from "@/theme/colors";
 import { useTheme } from "@/lib/theme/ThemeContext";
-import { GlowCard } from "@/components/GlowCard";
 
 const members = [
   { name: "김영수", age: 78, score: 42, status: "critical", hr: 142, spo2: 91 },
@@ -23,85 +22,84 @@ const alerts = [
   { severity: "warning", name: "최미경", msg: "스트레스 상승 추세 (5일)", time: "오늘 07:00" },
 ];
 
-function scoreColor(s: number) {
-  if (s >= 80) return Colors.emerald;
-  if (s >= 60) return Colors.gold;
-  return Colors.coral;
-}
-
 export default function OrgScreen() {
   const { colors } = useTheme();
+  const s = makeStyles(colors);
+
+  const scoreColor = (n: number) => {
+    if (n >= 80) return colors.emerald;
+    if (n >= 60) return colors.gold;
+    return colors.coral;
+  };
+
   const normal = members.filter((m) => m.status === "normal").length;
   const warning = members.filter((m) => m.status === "warning").length;
   const critical = members.filter((m) => m.status === "critical").length;
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <View style={s.container}>
       <SafeAreaView style={{ flex: 1 }}>
-        <ScrollView contentContainerStyle={styles.scroll}>
-          <View style={styles.header}>
-            <Ionicons name="business" size={24} color={Colors.teal} />
-            <Text style={styles.title}>화성시 통합돌봄센터</Text>
+        <ScrollView contentContainerStyle={s.scroll}>
+          <View style={s.header}>
+            <Ionicons name="business" size={24} color={colors.teal} />
+            <Text style={s.title}>화성시 통합돌봄센터</Text>
           </View>
-          <Text style={styles.subtitle}>2026.04.20 · 전체 {members.length}명 관리</Text>
+          <Text style={s.subtitle}>2026.04.20 · 전체 {members.length}명 관리</Text>
 
-          {/* Stats */}
-          <View style={styles.statsRow}>
+          <View style={s.statsRow}>
             {[
-              { label: "전체", value: members.length, color: Colors.foreground },
-              { label: "정상", value: normal, color: Colors.emerald },
-              { label: "주의", value: warning, color: Colors.gold },
-              { label: "위험", value: critical, color: Colors.coral },
-            ].map((s) => (
-              <View key={s.label} style={styles.statCard}>
-                <Text style={[styles.statValue, { color: s.color }]}>{s.value}</Text>
-                <Text style={styles.statLabel}>{s.label}</Text>
+              { label: "전체", value: members.length, color: colors.foreground },
+              { label: "정상", value: normal, color: colors.emerald },
+              { label: "주의", value: warning, color: colors.gold },
+              { label: "위험", value: critical, color: colors.coral },
+            ].map((stat) => (
+              <View key={stat.label} style={s.statCard}>
+                <Text style={[s.statValue, { color: stat.color }]}>{stat.value}</Text>
+                <Text style={s.statLabel}>{stat.label}</Text>
               </View>
             ))}
           </View>
 
-          {/* Alerts */}
-          <View style={styles.section}>
-            <View style={styles.sectionHeader}>
-              <Ionicons name="warning" size={16} color={Colors.coral} />
-              <Text style={styles.sectionTitle}>실시간 알림</Text>
+          <View style={s.section}>
+            <View style={s.sectionHeader}>
+              <Ionicons name="warning" size={16} color={colors.coral} />
+              <Text style={s.sectionTitle}>실시간 알림</Text>
               <View style={{ flex: 1 }} />
-              <View style={styles.alertCountBadge}>
-                <Text style={styles.alertCountText}>{alerts.length}건</Text>
+              <View style={s.alertCountBadge}>
+                <Text style={s.alertCountText}>{alerts.length}건</Text>
               </View>
             </View>
             <View style={{ gap: 8, marginTop: 12 }}>
               {alerts.map((a, i) => (
-                <View key={i} style={[styles.alertItem, a.severity === "critical" ? styles.alertCritical : styles.alertWarning]}>
-                  <View style={[styles.alertDot, { backgroundColor: a.severity === "critical" ? Colors.coral : Colors.gold }]} />
+                <View key={i} style={[s.alertItem, a.severity === "critical" ? s.alertCritical : s.alertWarning]}>
+                  <View style={[s.alertDot, { backgroundColor: a.severity === "critical" ? colors.coral : colors.gold }]} />
                   <View style={{ flex: 1 }}>
                     <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                      <Text style={styles.alertName}>{a.name}</Text>
-                      <Text style={styles.alertTime}>{a.time}</Text>
+                      <Text style={s.alertName}>{a.name}</Text>
+                      <Text style={s.alertTime}>{a.time}</Text>
                     </View>
-                    <Text style={styles.alertMsg}>{a.msg}</Text>
+                    <Text style={s.alertMsg}>{a.msg}</Text>
                   </View>
                 </View>
               ))}
             </View>
           </View>
 
-          {/* Member list */}
-          <View style={styles.section}>
-            <View style={styles.sectionHeader}>
-              <Ionicons name="people" size={16} color={Colors.muted} />
-              <Text style={styles.sectionTitle}>대상자 현황</Text>
+          <View style={s.section}>
+            <View style={s.sectionHeader}>
+              <Ionicons name="people" size={16} color={colors.muted} />
+              <Text style={s.sectionTitle}>대상자 현황</Text>
             </View>
             <View style={{ marginTop: 12 }}>
               {members.map((m, i) => (
-                <View key={m.name} style={[styles.memberRow, i === members.length - 1 && { borderBottomWidth: 0 }]}>
+                <View key={m.name} style={[s.memberRow, i === members.length - 1 && { borderBottomWidth: 0 }]}>
                   <View style={{ flex: 2 }}>
-                    <Text style={styles.memberName}>{m.name}</Text>
-                    <Text style={styles.memberAge}>{m.age}세</Text>
+                    <Text style={s.memberName}>{m.name}</Text>
+                    <Text style={s.memberAge}>{m.age}세</Text>
                   </View>
-                  <Text style={[styles.memberScore, { color: scoreColor(m.score), flex: 1 }]}>{m.score}</Text>
-                  <Text style={[styles.memberVital, { color: m.hr > 100 || m.hr < 50 ? Colors.coral : Colors.foreground, flex: 1 }]}>{m.hr}bpm</Text>
-                  <Text style={[styles.memberVital, { color: m.spo2 < 92 ? Colors.coral : Colors.foreground, flex: 1 }]}>{m.spo2}%</Text>
+                  <Text style={[s.memberScore, { color: scoreColor(m.score), flex: 1 }]}>{m.score}</Text>
+                  <Text style={[s.memberVital, { color: m.hr > 100 || m.hr < 50 ? colors.coral : colors.foreground, flex: 1 }]}>{m.hr}bpm</Text>
+                  <Text style={[s.memberVital, { color: m.spo2 < 92 ? colors.coral : colors.foreground, flex: 1 }]}>{m.spo2}%</Text>
                 </View>
               ))}
             </View>
@@ -112,31 +110,33 @@ export default function OrgScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Colors.background },
-  scroll: { padding: 16, paddingBottom: 80 },
-  header: { flexDirection: "row", alignItems: "center", gap: 8 },
-  title: { fontSize: 18, fontWeight: "700", color: Colors.foreground },
-  subtitle: { fontSize: 11, color: Colors.muted, marginTop: 4 },
-  statsRow: { flexDirection: "row", gap: 8, marginTop: 16 },
-  statCard: { flex: 1, padding: 12, backgroundColor: Colors.card, borderRadius: 12, alignItems: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.04)" },
-  statValue: { fontSize: 22, fontWeight: "900", fontVariant: ["tabular-nums"] },
-  statLabel: { fontSize: 10, color: Colors.muted, marginTop: 2 },
-  section: { padding: 16, backgroundColor: Colors.card, borderRadius: 16, marginTop: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.04)" },
-  sectionHeader: { flexDirection: "row", alignItems: "center", gap: 6 },
-  sectionTitle: { fontSize: 13, fontWeight: "600", color: Colors.foreground },
-  alertCountBadge: { paddingHorizontal: 8, paddingVertical: 2, backgroundColor: "rgba(244,63,94,0.15)", borderRadius: 6 },
-  alertCountText: { fontSize: 10, color: Colors.coral, fontWeight: "600" },
-  alertItem: { flexDirection: "row", alignItems: "flex-start", gap: 10, padding: 10, borderRadius: 10, borderWidth: 1 },
-  alertCritical: { backgroundColor: "rgba(244,63,94,0.06)", borderColor: "rgba(244,63,94,0.12)" },
-  alertWarning: { backgroundColor: "rgba(245,158,11,0.06)", borderColor: "rgba(245,158,11,0.12)" },
-  alertDot: { width: 8, height: 8, borderRadius: 4, marginTop: 4 },
-  alertName: { fontSize: 12, fontWeight: "600", color: Colors.foreground },
-  alertTime: { fontSize: 10, color: Colors.muted },
-  alertMsg: { fontSize: 11, color: Colors.muted, marginTop: 2 },
-  memberRow: { flexDirection: "row", alignItems: "center", paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.04)" },
-  memberName: { fontSize: 13, color: Colors.foreground, fontWeight: "500" },
-  memberAge: { fontSize: 10, color: Colors.muted },
-  memberScore: { fontSize: 14, fontWeight: "800", fontVariant: ["tabular-nums"] },
-  memberVital: { fontSize: 11, fontVariant: ["tabular-nums"] },
-});
+function makeStyles(c: ThemeColors) {
+  return StyleSheet.create({
+    container: { flex: 1, backgroundColor: c.background },
+    scroll: { padding: 16, paddingBottom: 80 },
+    header: { flexDirection: "row", alignItems: "center", gap: 8 },
+    title: { fontSize: 18, fontWeight: "700", color: c.foreground },
+    subtitle: { fontSize: 11, color: c.muted, marginTop: 4 },
+    statsRow: { flexDirection: "row", gap: 8, marginTop: 16 },
+    statCard: { flex: 1, padding: 12, backgroundColor: c.card, borderRadius: 12, alignItems: "center", borderWidth: 1, borderColor: c.border },
+    statValue: { fontSize: 22, fontWeight: "900", fontVariant: ["tabular-nums"] },
+    statLabel: { fontSize: 10, color: c.muted, marginTop: 2 },
+    section: { padding: 16, backgroundColor: c.card, borderRadius: 16, marginTop: 12, borderWidth: 1, borderColor: c.border },
+    sectionHeader: { flexDirection: "row", alignItems: "center", gap: 6 },
+    sectionTitle: { fontSize: 13, fontWeight: "600", color: c.foreground },
+    alertCountBadge: { paddingHorizontal: 8, paddingVertical: 2, backgroundColor: `${c.coral}26`, borderRadius: 6 },
+    alertCountText: { fontSize: 10, color: c.coral, fontWeight: "600" },
+    alertItem: { flexDirection: "row", alignItems: "flex-start", gap: 10, padding: 10, borderRadius: 10, borderWidth: 1 },
+    alertCritical: { backgroundColor: `${c.coral}0F`, borderColor: `${c.coral}1F` },
+    alertWarning: { backgroundColor: `${c.gold}0F`, borderColor: `${c.gold}1F` },
+    alertDot: { width: 8, height: 8, borderRadius: 4, marginTop: 4 },
+    alertName: { fontSize: 12, fontWeight: "600", color: c.foreground },
+    alertTime: { fontSize: 10, color: c.muted },
+    alertMsg: { fontSize: 11, color: c.muted, marginTop: 2 },
+    memberRow: { flexDirection: "row", alignItems: "center", paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: c.border },
+    memberName: { fontSize: 13, color: c.foreground, fontWeight: "500" },
+    memberAge: { fontSize: 10, color: c.muted },
+    memberScore: { fontSize: 14, fontWeight: "800", fontVariant: ["tabular-nums"] },
+    memberVital: { fontSize: 11, fontVariant: ["tabular-nums"] },
+  });
+}
