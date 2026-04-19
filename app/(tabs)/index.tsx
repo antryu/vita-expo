@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { Colors } from "@/theme/colors";
+import { useTheme } from "@/lib/theme/ThemeContext";
 import { GlowCard } from "@/components/GlowCard";
 import { VitaScoreRing } from "@/components/VitaScoreRing";
 
@@ -12,11 +13,12 @@ const weeklyScores = [78, 81, 84, 82, 85, 84, 87];
 const weekDays = ["M", "T", "W", "T", "F", "S", "S"];
 
 export default function DashboardScreen() {
+  const { colors, mode } = useTheme();
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <StatusBar barStyle={mode === "dark" ? "light-content" : "dark-content"} backgroundColor={colors.background} />
       <LinearGradient
-        colors={["rgba(20,184,166,0.08)", Colors.background]}
+        colors={[mode === "dark" ? "rgba(20,184,166,0.08)" : "rgba(13,148,136,0.05)", colors.background]}
         style={StyleSheet.absoluteFill}
       />
       <SafeAreaView style={{ flex: 1 }}>

@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { Colors } from "@/theme/colors";
+import { useTheme } from "@/lib/theme/ThemeContext";
 
 const healthSources = [
   { id: "vitalring", name: "VitalRing", icon: "finger-print" as const, connected: true, color: Colors.teal, device: "VR-2026-48291 / 72%" },
@@ -15,14 +16,51 @@ const healthSources = [
 export default function SettingsScreen() {
   const [notif, setNotif] = useState({ daily: true, anomaly: true, weekly: true, marketing: false });
   const [sharing, setSharing] = useState({ insurance: false, research: false });
+  const { mode: themeMode, toggle: toggleTheme, colors: themeColors } = useTheme();
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: themeColors.background }]}>
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView contentContainerStyle={styles.scroll}>
           <View style={styles.header}>
-            <Ionicons name="settings" size={24} color={Colors.teal} />
-            <Text style={styles.title}>설정</Text>
+            <Ionicons name="settings" size={24} color={themeColors.teal} />
+            <Text style={[styles.title, { color: themeColors.foreground }]}>설정</Text>
+          </View>
+
+          {/* Theme toggle */}
+          <View style={[styles.section, { backgroundColor: themeColors.card, borderColor: themeColors.border }]}>
+            <View style={styles.sectionHeader}>
+              <Ionicons name="color-palette" size={16} color={themeColors.muted} />
+              <Text style={[styles.sectionTitle, { color: themeColors.foreground }]}>화면 모드</Text>
+            </View>
+            <View style={{ flexDirection: "row", gap: 8, marginTop: 12 }}>
+              <TouchableOpacity
+                onPress={() => themeMode !== "dark" && toggleTheme()}
+                style={[
+                  styles.modeBtn,
+                  {
+                    backgroundColor: themeMode === "dark" ? themeColors.teal : themeColors.cardMuted,
+                    borderColor: themeMode === "dark" ? themeColors.teal : themeColors.border,
+                  },
+                ]}
+              >
+                <Ionicons name="moon" size={16} color={themeMode === "dark" ? "#fff" : themeColors.muted} />
+                <Text style={[styles.modeBtnText, { color: themeMode === "dark" ? "#fff" : themeColors.muted }]}>다크</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => themeMode !== "light" && toggleTheme()}
+                style={[
+                  styles.modeBtn,
+                  {
+                    backgroundColor: themeMode === "light" ? themeColors.teal : themeColors.cardMuted,
+                    borderColor: themeMode === "light" ? themeColors.teal : themeColors.border,
+                  },
+                ]}
+              >
+                <Ionicons name="sunny" size={16} color={themeMode === "light" ? "#fff" : themeColors.muted} />
+                <Text style={[styles.modeBtnText, { color: themeMode === "light" ? "#fff" : themeColors.muted }]}>라이트</Text>
+              </TouchableOpacity>
+            </View>
           </View>
 
           {/* Profile */}
@@ -164,6 +202,8 @@ const styles = StyleSheet.create({
   section: { padding: 16, backgroundColor: Colors.card, borderRadius: 16, marginTop: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.04)" },
   sectionHeader: { flexDirection: "row", alignItems: "center", gap: 6 },
   sectionTitle: { fontSize: 13, fontWeight: "600", color: Colors.foreground },
+  modeBtn: { flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6, paddingVertical: 12, borderRadius: 10, borderWidth: 1 },
+  modeBtnText: { fontSize: 13, fontWeight: "600" },
   avatar: { width: 56, height: 56, borderRadius: 28, justifyContent: "center", alignItems: "center" },
   avatarText: { fontSize: 18, fontWeight: "700", color: "#fff" },
   profileName: { fontSize: 16, fontWeight: "700", color: Colors.foreground },

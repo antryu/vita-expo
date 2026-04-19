@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/theme/colors";
+import { useTheme } from "@/lib/theme/ThemeContext";
 import { GlowCard } from "@/components/GlowCard";
 
 const members = [
@@ -29,12 +30,13 @@ function scoreColor(s: number) {
 }
 
 export default function OrgScreen() {
+  const { colors } = useTheme();
   const normal = members.filter((m) => m.status === "normal").length;
   const warning = members.filter((m) => m.status === "warning").length;
   const critical = members.filter((m) => m.status === "critical").length;
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView contentContainerStyle={styles.scroll}>
           <View style={styles.header}>

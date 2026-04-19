@@ -3,6 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { Colors } from "@/theme/colors";
+import { useTheme } from "@/lib/theme/ThemeContext";
 import { GlowCard } from "@/components/GlowCard";
 
 const familyMembers = [
@@ -24,11 +25,12 @@ function scoreColor(s: number) {
 }
 
 export default function GuardianScreen() {
+  const { colors } = useTheme();
   const criticalCount = familyMembers.filter((m) => m.status === "critical").length;
   const totalAlerts = familyMembers.reduce((s, m) => s + m.alerts, 0);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView contentContainerStyle={styles.scroll}>
           <View style={styles.header}>

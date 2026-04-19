@@ -1,22 +1,23 @@
 import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { View, StyleSheet } from "react-native";
-import { Colors } from "@/theme/colors";
+import { useTheme } from "@/lib/theme/ThemeContext";
 
-function ActiveIndicator() {
-  return <View style={styles.indicator} />;
+function ActiveIndicator({ color }: { color: string }) {
+  return <View style={[styles.indicator, { backgroundColor: color }]} />;
 }
 
 export default function TabLayout() {
+  const { colors, mode } = useTheme();
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: Colors.teal,
-        tabBarInactiveTintColor: "rgba(255,255,255,0.3)",
+        tabBarActiveTintColor: colors.teal,
+        tabBarInactiveTintColor: colors.mutedLight,
         tabBarStyle: {
-          backgroundColor: "rgba(10,14,26,0.95)",
-          borderTopColor: "rgba(255,255,255,0.06)",
+          backgroundColor: mode === "dark" ? "rgba(10,14,26,0.95)" : "rgba(248,250,252,0.95)",
+          borderTopColor: colors.border,
           borderTopWidth: 1,
           height: 60,
           paddingBottom: 6,
@@ -34,7 +35,7 @@ export default function TabLayout() {
           title: "홈",
           tabBarIcon: ({ color, focused }) => (
             <View style={{ alignItems: "center" }}>
-              {focused && <ActiveIndicator />}
+              {focused && <ActiveIndicator color={color} />}
               <Ionicons name={focused ? "grid" : "grid-outline"} size={20} color={color} />
             </View>
           ),
@@ -46,7 +47,7 @@ export default function TabLayout() {
           title: "보호자",
           tabBarIcon: ({ color, focused }) => (
             <View style={{ alignItems: "center" }}>
-              {focused && <ActiveIndicator />}
+              {focused && <ActiveIndicator color={color} />}
               <Ionicons name={focused ? "people" : "people-outline"} size={20} color={color} />
             </View>
           ),
@@ -58,7 +59,7 @@ export default function TabLayout() {
           title: "관제",
           tabBarIcon: ({ color, focused }) => (
             <View style={{ alignItems: "center" }}>
-              {focused && <ActiveIndicator />}
+              {focused && <ActiveIndicator color={color} />}
               <Ionicons name={focused ? "business" : "business-outline"} size={20} color={color} />
             </View>
           ),
@@ -70,7 +71,7 @@ export default function TabLayout() {
           title: "캐시",
           tabBarIcon: ({ color, focused }) => (
             <View style={{ alignItems: "center" }}>
-              {focused && <ActiveIndicator />}
+              {focused && <ActiveIndicator color={color} />}
               <Ionicons name={focused ? "diamond" : "diamond-outline"} size={20} color={color} />
             </View>
           ),
@@ -82,7 +83,7 @@ export default function TabLayout() {
           title: "설정",
           tabBarIcon: ({ color, focused }) => (
             <View style={{ alignItems: "center" }}>
-              {focused && <ActiveIndicator />}
+              {focused && <ActiveIndicator color={color} />}
               <Ionicons name={focused ? "settings" : "settings-outline"} size={20} color={color} />
             </View>
           ),
@@ -97,7 +98,6 @@ const styles = StyleSheet.create({
     width: 16,
     height: 2,
     borderRadius: 1,
-    backgroundColor: Colors.teal,
     marginBottom: 2,
   },
 });

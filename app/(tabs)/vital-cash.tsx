@@ -3,6 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { Colors } from "@/theme/colors";
+import { useTheme } from "@/lib/theme/ThemeContext";
 import { GlowCard } from "@/components/GlowCard";
 
 const earningRules = [
@@ -24,8 +25,9 @@ const transactions = [
 ];
 
 export default function VitalCashScreen() {
+  const { colors } = useTheme();
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView contentContainerStyle={styles.scroll}>
           <View style={styles.header}>
