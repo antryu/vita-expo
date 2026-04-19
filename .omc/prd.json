@@ -1,0 +1,128 @@
+{
+  "title": "VITA Expo — Complete Mobile Platform",
+  "description": "Full React Native mobile app with all screens + Supabase + 4 health data source integrations",
+  "stories": [
+    {
+      "id": "EX-001",
+      "title": "Navigation + bottom tabs (5 tabs)",
+      "priority": 1,
+      "passes": false,
+      "acceptanceCriteria": [
+        "expo-router or react-navigation configured with 5 bottom tabs",
+        "Tabs: 홈(dashboard), 보호자(guardian), 관제(org), 캐시(vital-cash), 설정(settings)",
+        "Active tab shows teal accent + indicator line",
+        "Each tab is a proper screen component",
+        "TypeScript compiles with no errors"
+      ]
+    },
+    {
+      "id": "EX-002",
+      "title": "Guardian screen — family list + detail view",
+      "priority": 2,
+      "passes": false,
+      "acceptanceCriteria": [
+        "Guardian screen lists 3 family members (아버지/어머니/삼촌) with different health statuses",
+        "Each member card shows: avatar, name, relation+age, VITA Score color-coded, status badge, 4 vital icons+values",
+        "Tap member card navigates to detail screen",
+        "Detail screen shows: profile header, active alerts, 4 vital cards, 7-day trend chart, AI coaching, activity",
+        "Mock data matches web version (안종현/박순자/이범수 with 87/62/38 scores)",
+        "Dark theme with glow cards, Korean labels"
+      ]
+    },
+    {
+      "id": "EX-003",
+      "title": "Vital Cash screen (rewards + earning rules + transaction history)",
+      "priority": 3,
+      "passes": false,
+      "acceptanceCriteria": [
+        "Balance card shows current points (12,400P) with monthly earned/burned",
+        "Earning rules grid: 6 rules (sleep, morning, stress, family, fandom, medication)",
+        "Redemption options: subscription discount, Vital Mall, partner benefits",
+        "Transaction history list with earn/burn indicators",
+        "Dark theme with gold glow on balance card",
+        "Korean labels"
+      ]
+    },
+    {
+      "id": "EX-004",
+      "title": "Subscription screen (3-tier plans + payment history)",
+      "priority": 4,
+      "passes": false,
+      "acceptanceCriteria": [
+        "Current plan card showing Premium status",
+        "3 plan cards: Basic 19,900 / Premium 29,900 / Platinum 49,900",
+        "Each plan shows features list with checkmarks",
+        "Selected/current plan visually distinct",
+        "Payment history list (4 entries)",
+        "Korean labels, dark theme"
+      ]
+    },
+    {
+      "id": "EX-005",
+      "title": "Settings screen + health data source connections",
+      "priority": 5,
+      "passes": false,
+      "acceptanceCriteria": [
+        "Profile section with 안종현 name + email + Premium badge",
+        "Notification toggles (daily, anomaly, weekly, marketing)",
+        "Data sharing toggles (insurance, research)",
+        "Connected health sources section listing: VitalRing, Apple HealthKit, Samsung Health, Garmin Connect",
+        "Each source shows connection status (연결됨/미연결) and sync button",
+        "Korean labels, dark theme"
+      ]
+    },
+    {
+      "id": "EX-006",
+      "title": "Organization dashboard (B2B/B2G monitoring)",
+      "priority": 6,
+      "passes": false,
+      "acceptanceCriteria": [
+        "Org header: 화성시 통합돌봄센터",
+        "4 stat cards: 전체/정상/주의/위험 counts",
+        "Real-time alerts list (4 alerts: 2 critical, 2 warning) with muted colors (not bright)",
+        "Weekly stats cards: 수면/스트레스/VITA Score",
+        "Member list table with 10 Korean seniors",
+        "Dark theme, Korean labels"
+      ]
+    },
+    {
+      "id": "EX-007",
+      "title": "Supabase client setup",
+      "priority": 7,
+      "passes": false,
+      "acceptanceCriteria": [
+        "lib/supabase.ts exports configured client",
+        "Env vars read from expo-constants or .env",
+        "Auth helper functions: signIn, signUp, signOut, getSession",
+        "TypeScript compiles with no errors"
+      ]
+    },
+    {
+      "id": "EX-008",
+      "title": "Health data source integration stubs (4 sources)",
+      "priority": 8,
+      "passes": false,
+      "acceptanceCriteria": [
+        "lib/health/vitalring.ts - VitalRing API client stub",
+        "lib/health/apple-healthkit.ts - HealthKit integration stub with react-native-health comments",
+        "lib/health/samsung-health.ts - Samsung Health integration stub",
+        "lib/health/garmin.ts - Garmin Health API OAuth + REST client stub",
+        "lib/health/aggregator.ts - merges data from all sources with priority rules",
+        "Each exports typed functions with mock responses",
+        "TypeScript compiles with no errors"
+      ]
+    },
+    {
+      "id": "EX-009",
+      "title": "Deploy to Vercel + GitHub update",
+      "priority": 9,
+      "passes": false,
+      "acceptanceCriteria": [
+        "git commit with all changes",
+        "git push to https://github.com/antryu/vita-expo",
+        "Vercel deployment succeeds at https://vita-expo.vercel.app",
+        "All 5 tab screens accessible on web build"
+      ]
+    }
+  ]
+}

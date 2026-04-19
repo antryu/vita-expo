@@ -1,0 +1,21 @@
+# VITA Expo — Progress Log
+
+## Decision Pivot (2026-04-20)
+- Flutter archived: watch native apps NOT needed
+- New strategy: VITA = multi-device health aggregator
+- Data sources: VitalRing (API) + Apple Watch (HealthKit) + Galaxy Watch (Samsung Health) + Garmin (API)
+- Single Expo mobile app aggregates all sources
+
+## Already Done
+- Expo project created with TypeScript
+- Dashboard screen ported from Flutter (Korean, dark theme, glow cards)
+- Dependencies: react-native-svg, expo-linear-gradient, @expo/vector-icons,
+  react-native-reanimated, react-native-safe-area-context
+- lib/ai/vita-score.ts, anomaly.ts, coaching.ts copied from vita-app
+- lib/types/health.ts created with DataSource union
+
+## Session Start
+- Navigation system not yet in place (single DashboardScreen in App.tsx)
+- Only dashboard exists, 4 more screens to build
+- No Supabase connection
+- No health source integrations
